@@ -8,16 +8,16 @@ $(document).ready(function() {
             {
                 label: "All Queries",
                 data: [],
-                fillColor: "rgba(220,220,220,0.5)",
-                strokeColor: "rgba(0, 166, 90,.8)",
-                pointColor: "rgba(0, 166, 90,.8)"
+                backgroundColor: "rgba(220, 220, 220, 0.5)",
+                borderColor: "rgba(0, 166, 90, 0.8)",
+                pointBackgroundColor: "rgba(0, 166, 90, 0.8)"
             },
             {
                 label: "Ad Queries",
                 data: [],
-                fillColor: "rgba(0,192,239,0.5)",
-                strokeColor: "rgba(0,192,239,1)",
-                pointColor: "rgba(0,192,239,1)"
+                backgroundColor: "rgba(0, 192, 239, 0.5)",
+                borderColor: "rgba(0, 192, 239, 1)",
+                pointBackgroundColor: "rgba(0, 192, 239, 1)"
             }
         ]
     };
