@@ -10,14 +10,18 @@ $(document).ready(function() {
                 data: [],
                 backgroundColor: "rgba(220, 220, 220, 0.5)",
                 borderColor: "rgba(0, 166, 90, 0.8)",
-                pointBackgroundColor: "rgba(0, 166, 90, 0.8)"
+                pointBackgroundColor: "rgba(0, 166, 90, 0.8)",
+                pointRadius: 0,
+                pointHitRadius: 20
             },
             {
                 label: "Ad Queries",
                 data: [],
                 backgroundColor: "rgba(0, 192, 239, 0.5)",
                 borderColor: "rgba(0, 192, 239, 1)",
-                pointBackgroundColor: "rgba(0, 192, 239, 1)"
+                pointBackgroundColor: "rgba(0, 192, 239, 1)",
+                pointRadius: 0,
+                pointHitRadius: 20
             }
         ]
     };
@@ -26,8 +30,23 @@ $(document).ready(function() {
     timeLineChart = new Chart($("#queryOverTimeChart"), {
         type: "line",
         data: chartData,
-        pointDot : false,
-        animation : animate
+        animation : animate,
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            },
+            legend: {
+                display: false
+            },
+            tooltips: {
+                mode: "x-axis"
+            },
+            maintainAspectRatio: false
+        }
     });
 
     queryTypeChart = new Chart($("#queryTypeChart"), {
