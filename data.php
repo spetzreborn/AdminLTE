@@ -7,11 +7,23 @@
     /*******   Public Members ********/
     function getSummaryData() {
         global $log, $divide;
+        $time_start = microtime(true);
         $domains_being_blocked = gravityCount() / ($divide ? 2 : 1);
+        $time_end = microtime(true);
+        $time = $time_end - $time_start;
+        echo "Execution time gravityCount(): ".$time." seconds\n";
 
+        $time_start = microtime(true);
         $dns_queries_today = count(getDnsQueries($log));
+        $time_end = microtime(true);
+        $time = $time_end - $time_start;
+        echo "Execution time getDnsQueries(): ".$time." seconds (".$dns_queries_today." entries)\n";
 
+        $time_start = microtime(true);
         $ads_blocked_today = count(getBlockedQueries($log));
+        $time_end = microtime(true);
+        $time = $time_end - $time_start;
+        echo "Execution time getBlockedQueries(): ".$time." seconds (".$ads_blocked_today." entries)\n";
 
         $ads_percentage_today = $dns_queries_today > 0 ? ($ads_blocked_today / $dns_queries_today * 100) : 0;
 
@@ -25,12 +37,36 @@
 
     function getOverTimeData() {
         global $log;
+        $time_start = microtime(true);
         $dns_queries = getDnsQueries($log);
-        $ads_blocked = getBlockedQueries($log);
+        $time_end = microtime(true);
+        $time = $time_end - $time_start;
+        echo "Execution time getDnsQueries(): ".$time." seconds (".count($dns_queries)." entries)\n";
 
+        $time_start = microtime(true);
+        $ads_blocked = getBlockedQueries($log);
+        $time_end = microtime(true);
+        $time = $time_end - $time_start;
+        echo "Execution time getBlockedQueries(): ".$time." seconds (".count($ads_blocked)." entries)\n";
+
+        $time_start = microtime(true);
         $domains_over_time = overTime($dns_queries);
+        $time_end = microtime(true);
+        $time = $time_end - $time_start;
+        echo "Execution time overTime(): ".$time." seconds (".count($dns_queries)." entries)\n";
+
+        $time_start = microtime(true);
         $ads_over_time = overTime($ads_blocked);
+        $time_end = microtime(true);
+        $time = $time_end - $time_start;
+        echo "Execution time overTime(): ".$time." seconds (".count($ads_blocked)." entries)\n";
+
+        $time_start = microtime(true);
         alignTimeArrays($ads_over_time, $domains_over_time);
+        $time_end = microtime(true);
+        $time = $time_end - $time_start;
+        echo "Execution time alignTimeArrays(,): ".$time." seconds (".count($ads_blocked)." entries)\n";
+
         return Array(
             'domains_over_time' => $domains_over_time,
             'ads_over_time' => $ads_over_time,
