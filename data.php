@@ -17,19 +17,25 @@
         $dns_queries_today = count(getDnsQueries($log));
         $time_end = microtime(true);
         $time = $time_end - $time_start;
-        echo "Execution time getDnsQueries(): ".$time." seconds (".$dns_queries_today." entries)\n";
+        echo "Execution time getDnsQueries(): ".$time." seconds (result: ".$dns_queries_today." entries)\n";
 
         $time_start = microtime(true);
         $dns_queries_today = countDnsQueries();
         $time_end = microtime(true);
         $time = $time_end - $time_start;
-        echo "Execution time countDnsQueries(): ".$time." seconds (".$dns_queries_today." entries)\n";
+        echo "Execution time countDnsQueries(): ".$time." seconds (result: ".$dns_queries_today." entries)\n";
 
         $time_start = microtime(true);
         $ads_blocked_today = count(getBlockedQueries($log));
         $time_end = microtime(true);
         $time = $time_end - $time_start;
-        echo "Execution time getBlockedQueries(): ".$time." seconds (".$ads_blocked_today." entries)\n";
+        echo "Execution time getBlockedQueries(): ".$time." seconds (result: ".$ads_blocked_today." entries)\n";
+
+        $time_start = microtime(true);
+        $ads_blocked_today = countBlockedQueries();
+        $time_end = microtime(true);
+        $time = $time_end - $time_start;
+        echo "Execution time countBlockedQueries(): ".$time." seconds (result: ".$ads_blocked_today." entries)\n";
 
         $ads_percentage_today = $dns_queries_today > 0 ? ($ads_blocked_today / $dns_queries_today * 100) : 0;
 
@@ -271,6 +277,12 @@
         }
         return $lines;
     }
+
+    function countBlockedQueries() {
+        $hostname = trim(file_get_contents("/etc/hostname"), "\x00..\x1F");
+        return exec("grep \"gravity.list\" /var/log/pihole.log | grep -v \"pi.hole\" | grep -v -c \"".$hostname."\"");
+    }
+
     function getForwards(\SplFileObject $log) {
         $log->rewind();
         $lines = [];
