@@ -14,6 +14,12 @@
         echo "Execution time gravityCount(): ".$time." seconds\n";
 
         $time_start = microtime(true);
+        $domains_being_blocked = countgravityCount() / ($divide ? 2 : 1);
+        $time_end = microtime(true);
+        $time = $time_end - $time_start;
+        echo "Execution time countgravityCount(): ".$time." seconds\n";
+
+        $time_start = microtime(true);
         $dns_queries_today = count(getDnsQueries($log));
         $time_end = microtime(true);
         $time = $time_end - $time_start;
@@ -230,6 +236,9 @@
 
         return $swallowed;
 
+    }
+    function countgravityCount() {
+        return exec("grep -c ^ /etc/pihole/gravity.list");
     }
 
     function getDnsQueries(\SplFileObject $log) {
