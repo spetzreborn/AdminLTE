@@ -20,6 +20,12 @@
         echo "Execution time getDnsQueries(): ".$time." seconds (".$dns_queries_today." entries)\n";
 
         $time_start = microtime(true);
+        $dns_queries_today = countDnsQueries();
+        $time_end = microtime(true);
+        $time = $time_end - $time_start;
+        echo "Execution time countDnsQueries(): ".$time." seconds (".$dns_queries_today." entries)\n";
+
+        $time_start = microtime(true);
         $ads_blocked_today = count(getBlockedQueries($log));
         $time_end = microtime(true);
         $time = $time_end - $time_start;
@@ -219,6 +225,7 @@
         return $swallowed;
 
     }
+
     function getDnsQueries(\SplFileObject $log) {
         $log->rewind();
         $lines = [];
@@ -229,6 +236,11 @@
         }
         return $lines;
     }
+
+    function countDnsQueries() {
+        return exec("grep -c \": query\\[\" /var/log/pihole.log");
+    }
+
     function getDnsQueriesAll(\SplFileObject $log) {
         $log->rewind();
         $lines = [];
@@ -239,6 +251,7 @@
         }
         return $lines;
     }
+
     function getBlockedQueries(\SplFileObject $log) {
         $log->rewind();
         $lines = [];
